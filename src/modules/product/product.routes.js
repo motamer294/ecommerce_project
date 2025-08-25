@@ -1,17 +1,10 @@
-const router = require('express').Router();
-const { auth, isAdmin } = require('../../middleware/auth');
-const {
-  addProduct,
-  updateProduct,
-  deleteProduct,
-  getAllProducts
-} = require('./product.controller');
+import { Router } from 'express';
+import { verifyToken, isAdmin } from '../../middleware/auth.js';
+import { addProduct, deleteProduct, getAllProducts, updateProduct } from './product.controller.js';
 
-router.get('/', getAllProducts);
+export const productRoutes = Router();
 
-
-router.post('/', auth, isAdmin, addProduct);
-router.patch('/:id', auth, isAdmin, updateProduct);
-router.delete('/:id', auth, isAdmin, deleteProduct);
-
-module.exports = router;
+productRoutes.get('/', getAllProducts); // GET /api/products
+productRoutes.post('/', verifyToken, isAdmin, addProduct); // POST /api/products
+productRoutes.patch('/:id', verifyToken, isAdmin, updateProduct); // PATCH /api/products/:id
+productRoutes.delete('/:id', verifyToken, isAdmin, deleteProduct); // DELETE /api/products/:id

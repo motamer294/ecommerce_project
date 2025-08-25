@@ -1,30 +1,25 @@
 import express from 'express';
-import { dbConnection } from './models/dbConnection.js';
-import userRoutes from './src/modules/user/user.routes.js';
+import cors from 'cors';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
+import { connectDB } from './src/db/dbConnection.js';
+import { userRoutes } from './src/modules/user/user.routes.js';
+import { productRoutes } from './src/modules/product/product.routes.js';
+import { orderRoutes } from './src/modules/order/order.routes.js';
+import { postsRoutes } from './src/modules/post/post.routes.js';
 
 dotenv.config();
-
 const app = express();
+app.use(cors());
 app.use(express.json());
 
-// Routes
+await connectDB();
+
 app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api', postsRoutes);
 
-// DB Connection
-dbConnection
-  .then(() => {
-    console.log("✅ MongoDB Atlas Connected Successfully!");
-
-    
-    const userSchema = new mongoose.Schema({ name: String, email: String });
-    const User = mongoose.model('User', userSchema);
-
-    const testUser = new User({ name: "Mohamed", email: "mohamed@test.com" });
-    testUser.save().then(() => console.log("Test user added to DB!"));
-  })
-  .catch(err => console.error("❌ MongoDB Atlas Connection Error:", err));
+app.get('/', (req, res) => res.json({ ok: true, service: 'E-commerce API' }));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
