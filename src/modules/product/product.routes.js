@@ -1,10 +1,13 @@
-import { Router } from 'express';
-import { verifyToken, isAdmin } from '../../middleware/auth.js';
-import { addProduct, deleteProduct, getAllProducts, updateProduct } from './product.controller.js';
+import express from 'express';
+import { seedProducts, addProduct, updateProduct, deleteProduct, getAllProducts } from './product.controller.js';
+import { auth, adminOnly } from '../../middleware/auth.js'; 
 
-export const productRoutes = Router();
+const router = express.Router();
 
-productRoutes.get('/', getAllProducts); // GET /api/products
-productRoutes.post('/', verifyToken, isAdmin, addProduct); // POST /api/products
-productRoutes.patch('/:id', verifyToken, isAdmin, updateProduct); // PATCH /api/products/:id
-productRoutes.delete('/:id', verifyToken, isAdmin, deleteProduct); // DELETE /api/products/:id
+router.post('/seed', auth, adminOnly, seedProducts); 
+router.post('/', auth, adminOnly, addProduct);
+router.patch('/:id', auth, adminOnly, updateProduct);
+router.delete('/:id', auth, adminOnly, deleteProduct);
+router.get('/', getAllProducts);
+
+export default router;

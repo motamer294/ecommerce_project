@@ -1,4 +1,4 @@
-import { Post } from '../../db/models/post.model.js';
+import Post from '../../db/models/post.model.js';
 
 export const getPosts = async (req, res) => {
   const posts = await Post.find().populate('createdBy');
@@ -25,9 +25,3 @@ export const deletePost = async (req, res) => {
 
 
 
-    export{
-        getPosts,
-        addPost,
-        updatePost,
-        deletePost
-    }

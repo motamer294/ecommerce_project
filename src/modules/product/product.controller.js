@@ -1,4 +1,20 @@
-import { Product } from '../../db/models/product.model.js';
+import Product from '../../db/models/product.model.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const productsData = require('./productsData.json');
+
+// Seed function
+export async function seedProducts(_req, res) {
+  try {
+
+    await Product.deleteMany({});
+
+    const products = await Product.insertMany(productsData);
+    res.status(201).json({ message: 'Products seeded successfully', products });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to seed products', error: err.message });
+  }
+}
 
 export const addProduct = async (req, res) => {
   const product = await Product.create(req.body);
@@ -19,7 +35,7 @@ export const deleteProduct = async (req, res) => {
   res.json({ message: 'Product deleted' });
 };
 
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = async (_req, res) => {
   const products = await Product.find();
   res.json(products);
 };

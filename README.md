@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+HEAD
 node js task for NTI MEAN STACK internship
-=======
+
 # E-commerce Backend (Node + Express + MongoDB)
 
 ## Setup
@@ -17,4 +17,4 @@ node js task for NTI MEAN STACK internship
 
 ## Auth
 - Send header: `Authorization: Bearer <token>`
->>>>>>> 6c2f66a (Refactor backend: unified ES Modules, added auth middleware)
+6c2f66a (Refactor backend: unified ES Modules, added auth middleware)

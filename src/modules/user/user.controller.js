@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '../../db/models/user.model.js';
-import { sendMail } from '../../utilities/email/sendMail.js';
+import User from '../../db/models/user.model.js';
+import { sendMail } from '../../utilities/Email/sendMail.js';
+
+
 
 export const getAllUsers = async (req, res) => {
   const users = await User.find().select('-password');
@@ -60,3 +62,4 @@ export const deleteUser = async (req, res) => {
   const deletedUser = await User.findByIdAndDelete(id).select('-password');
   res.json({ message: 'deleted successfully', deletedUser });
 };
+
